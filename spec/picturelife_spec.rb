@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe Picturelife do
+  before(:each) do
+    Picturelife.client_id     = 'aaa'
+    Picturelife.client_secret = 'bbb'
+    Picturelife.redirect_uri  = 'ccc'
+  end
+
   it 'accepts api keys' do
     expect { Picturelife.client_id     = 'test' }.not_to raise_error
     expect { Picturelife.client_secret = 'test' }.not_to raise_error
@@ -13,13 +19,41 @@ describe Picturelife do
   end
 
   it 'builds valid authorization url' do
-    Picturelife.client_id     = 'aaa'
-    Picturelife.client_secret = 'bbb'
-    Picturelife.redirect_uri  = 'ccc'
-
     expect(Picturelife.authorization_uri).to include 'aaa'
     expect(Picturelife.authorization_uri).to include 'bbb'
     expect(Picturelife.authorization_uri).to include 'ccc'
   end
+
+  it 'returns access token' do
+    Picturelife.stub(:access_token).and_return('code')
+    expect(Picturelife.access_token('code')).to eq 'code'
+  end
+
+  it 'generated client uuid' do
+    expect(Picturelife.send(:client_uuid)).to be_kind_of(String)
+  end
+
+  it 'caches uuid' do
+    uuid = Proc.new { Picturelife.send(:client_uuid) } 
+    expect(uuid).to eq uuid
+  end
+
+  it 'queries API' do
+    expect(Net::HTTP).to receive(:get) do |uri|
+      expect(uri.scheme).to eq 'https'
+      expect(uri.query).to include 'client_id=aaa'
+      expect(uri.query).to include 'client_secret=bbb'
+      expect(uri.query).to include 'code=code'
+      expect(uri.to_s).to include Picturelife::OAUTH_ENDPOINT
+    end.and_return('{"access_token"=>"ddd"}')
+
+    Picturelife.access_token('code')
+  end
+
+  it 'API returns hashrocket that is converted to json' do
+    Net::HTTP.stub(:get).and_return('{"access_token"=>"ddd"}')
+    expect(Picturelife.access_token('code')).to eq 'ddd'
+  end
+
 
 end
