@@ -12,9 +12,10 @@ And then execute:
 
 ## Features
 
-  - Minimal dependencies
-  - Authentication via OAuth
   - Resumable photo upload
+  - Authentication via OAuth
+  - Minimal dependencies
+  - Ruby syntax
 
 ## Usage
 
@@ -44,6 +45,13 @@ And then execute:
       code = params['code']
       access_token = Picturelife.access_token(code)
     end
+
+```
+
+```ruby
+    
+    Picturelife::Medias.index({ limit: 10 })
+
 
 ```
 

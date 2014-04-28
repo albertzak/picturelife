@@ -55,5 +55,22 @@ describe Picturelife do
     expect(Picturelife.access_token('code')).to eq 'ddd'
   end
 
+  it 'stubs missing constant names' do
+    expect { Picturelife::SmartFilters }.not_to raise_error
+  end
+
+  it 'stubs missing methods on missing constants' do
+    expect { Picturelife::SmartFilters.index }.not_to raise_error
+  end
+
+  it 'stubs call correct api method' do
+    expect(Picturelife::Api).to receive(:call).with('smart_filters/index', nil)
+    Picturelife::SmartFilters.index
+  end
+
+  it 'stubs call correct api method with args' do
+    expect(Picturelife::Api).to receive(:call).with('smart_filters/index', { include_system: true })
+    Picturelife::SmartFilters.index({ include_system: true })
+  end
 
 end
