@@ -30,5 +30,16 @@ module Picturelife
 
       @access_token = api_oauth_get(uri)['access_token']
     end
+
+    private
+    
+    def api_oauth_get(uri)
+      uri      = URI(URI.encode(uri))
+      response = Net::HTTP.get(uri)
+      response = JSON.parse(hashrocket_to_json(response))
+      raise OAuthError.new(response["error"]) if response["status"] != 200
+      response
+    end
+
   end
 end

@@ -10,11 +10,6 @@ module Picturelife
       camelcase.gsub(/(.)([A-Z])/,'\1_\2').downcase
     end
 
-    def api_oauth_get(uri)
-      uri = URI(URI.encode(uri))
-      JSON.parse(hashrocket_to_json(Net::HTTP.get(uri)))
-    end
-
     def api_get(uri)
       uri = URI(URI.encode(uri))
       JSON.parse(Net::HTTP.get(uri))

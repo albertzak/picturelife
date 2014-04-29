@@ -24,6 +24,7 @@ module Picturelife
   end
 
   class OAuthError < StandardError; end
+  class ApiError < StandardError; end
 
 
   module Util

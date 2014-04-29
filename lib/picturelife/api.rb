@@ -8,7 +8,7 @@ module Picturelife
       def call(uri, args = nil)
         needs_token!
 
-        build_uri(uri, args)
+        api_get(build_uri(uri, args))
       end
 
       private
@@ -17,12 +17,21 @@ module Picturelife
         [API_ENDPOINT, uri, build_parameters(args)].join
       end
 
-      def build_parameters(args = {})
-        return '' if args.nil?
-        return ['?', args].join if args.is_a? String
+      def build_parameters(args = nil)
+        args = {} if args.nil?
+
+        args.merge!(access_token: Picturelife.access_token)
+
         return ['?', URI.encode_www_form(args)].join
       end
 
+      def api_get(uri)
+        uri      = URI(URI.encode(uri))
+        response = Net::HTTP.get(uri)
+        response = JSON.parse(response)
+        raise ApiError.new(response) if response["status"] != 20000
+        response
+      end
     end
   end
 end
