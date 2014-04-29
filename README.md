@@ -43,14 +43,14 @@ And then execute:
 
     get '/oauth' do
       code = params['code']
-      access_token = Picturelife.access_token(code)
+      Picturelife.access_token = code
     end
 
 ```
 
 ```ruby
     
-    Picturelife::Medias.index({ limit: 10 })
+    Picturelife::Medias.index(limit: 10)
 
 
 ```
