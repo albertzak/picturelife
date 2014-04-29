@@ -37,7 +37,7 @@ describe Picturelife do
   end
 
   it 'gets and sets access token' do
-    Net::HTTP.stub(:get).and_return('{"access_token":"token"}')
+    Net::HTTP.stub(:get).and_return('{"access_token":"token","status":200}')
 
     Picturelife.access_token = 'code'
     expect(Picturelife.access_token).to eq 'token'
@@ -59,7 +59,7 @@ describe Picturelife do
       expect(uri.query).to include 'client_secret=bbb'
       expect(uri.query).to include 'code=code'
       expect(uri.to_s).to include Picturelife::OAUTH_ENDPOINT
-    end.and_return('{"access_token"=>"ddd"}')
+    end.and_return('{"access_token"=>"ddd","status"=>200}')
 
     Picturelife.access_token = 'code'
   end
@@ -94,22 +94,23 @@ describe Picturelife do
 
   it 'builds url parameters without args' do
     url = Picturelife::Api.send(:build_uri, 'smart_filters/index')
-    expect(url).to eq 'https://api.picturelife.com/smart_filters/index'
+    expect(url).to include('https://api.picturelife.com/smart_filters/index')
   end
 
   it 'builds url parameters from args' do
     url = Picturelife::Api.send(:build_uri, 'smart_filters/index', {limit: 10})
-    expect(url).to eq 'https://api.picturelife.com/smart_filters/index?limit=10'
+    expect(url).to include('https://api.picturelife.com/smart_filters/index?limit=10')
   end
 
   it 'builds url parameters from multiple args' do
     url = Picturelife::Api.send(:build_uri, 'smart_filters/index', {limit: 10, include_system: true})
-    expect(url).to eq 'https://api.picturelife.com/smart_filters/index?limit=10&include_system=true'
+    expect(url).to include('https://api.picturelife.com/smart_filters/index?limit=10&include_system=true')
   end
 
-  it 'builds url parameters from string' do
-    url = Picturelife::Api.send(:build_uri, 'smart_filters/index', 'limit=10&include_system=true')
-    expect(url).to eq 'https://api.picturelife.com/smart_filters/index?limit=10&include_system=true'
+  it 'adds access token to url parameters' do
+    Picturelife.stub(:access_token).and_return('123')
+    url = Picturelife::Api.send(:build_uri, 'smart_filters/index', {limit: 10, include_system: true})
+    expect(url).to eq('https://api.picturelife.com/smart_filters/index?limit=10&include_system=true&access_token=123')
   end
 
 end
