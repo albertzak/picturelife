@@ -1,7 +1,7 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'picturelife/version'
+require 'picturelife'
 
 Gem::Specification.new do |spec|
   spec.name          = 'picturelife'
@@ -9,7 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Albert Zak']
   spec.email         = ['me@albertzak.com']
   spec.summary       = %q{Picturelife API. OAuth. Resumable Uploads.}
-  spec.homepage      = ''
+  spec.description   = 'A gem to access the Picturelife API.'
+  spec.homepage      = 'https://github.com/albertzak/picturelife'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
