@@ -43,7 +43,7 @@ And then execute:
 
     get '/oauth' do
       code = params['code']
-      Picturelife.access_token = code
+      Picturelife.access_token_from_code = code
     end
 
 ```

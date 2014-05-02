@@ -16,7 +16,7 @@ module Picturelife
       ].join
     end
 
-    def access_token=(code)
+    def access_token_from_code=(code)
       needs_configuration!
 
       uri = [

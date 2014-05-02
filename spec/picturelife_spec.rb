@@ -39,7 +39,7 @@ describe Picturelife do
   it 'gets and sets access token' do
     Net::HTTP.stub(:get).and_return('{"access_token":"token","status":200}')
 
-    Picturelife.access_token = 'code'
+    Picturelife.access_token_from_code = 'code'
     expect(Picturelife.access_token).to eq 'token'
   end
 
@@ -61,7 +61,7 @@ describe Picturelife do
       expect(uri.to_s).to include Picturelife::OAUTH_ENDPOINT
     end.and_return('{"access_token"=>"ddd","status"=>200}')
 
-    Picturelife.access_token = 'code'
+    Picturelife.access_token_from_code = 'code'
   end
 
   it 'API returns hashrocket that is converted to json' do
