@@ -9,6 +9,9 @@ describe Picturelife do
     Picturelife.stub(:authenticated?).and_return(true)
 
     Net::HTTP.stub(:get).and_return('{"status":20000}')
+
+    File.stub(:read).and_return('image')
+    File.stub(:extname).and_return('jpg')
   end
 
   it 'accepts api keys' do
@@ -114,5 +117,21 @@ describe Picturelife do
     url = Picturelife::Api.send(:build_uri, 'smart_filters/index', {limit: 10, include_system: true})
     expect(url).to eq('https://api.picturelife.com/smart_filters/index?limit=10&include_system=true&access_token=123')
   end
+
+  it 'needs authentication for calls to api' do
+    Picturelife.stub(:authenticated?).and_return(false)
+    expect { Picturelife::Api.call('index') }.to raise_error(Picturelife::NotAuthenticatedError)
+  end
+
+  it 'needs authentication for calls to ruler' do
+    Picturelife.stub(:authenticated?).and_return(false)
+    expect { Picturelife::Ruler.upload(StringIO.new) }.to raise_error(Picturelife::NotAuthenticatedError)
+  end
+
+  it 'needs authentication for calls to ruler' do
+    Picturelife::Ruler.should_receive(:media_exists).and_return('media_id')
+    expect(Picturelife::Ruler.upload(StringIO.new)).to eq('media_id')
+  end
+
 
 end

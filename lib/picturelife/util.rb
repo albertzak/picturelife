@@ -23,5 +23,13 @@ module Picturelife
       @client_uuid ||= rand(36**36).to_s(36)
     end
 
+    def get_signature(file_path)
+      Digest::SHA256.hexdigest File.read(file_path)
+    end
+
+    def get_filename(file_path)
+      [get_signature(file_path), '_', client_uuid, File.extname(file_path)].join
+    end
+
   end
 end
