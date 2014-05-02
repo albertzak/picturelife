@@ -6,6 +6,8 @@ describe Picturelife do
     Picturelife.client_secret = 'bbb'
     Picturelife.redirect_uri  = 'ccc'
 
+    Picturelife.stub(:authenticated?).and_return(true)
+
     Net::HTTP.stub(:get).and_return('{"status":20000}')
   end
 
@@ -21,7 +23,7 @@ describe Picturelife do
   end
 
   it 'raises error if not authenticated' do
-    Picturelife.reset_authentication!
+    Picturelife.stub(:authenticated?).and_return(false)
     expect { Picturelife::Api.call('/') }. to raise_error(Picturelife::NotAuthenticatedError)
   end
 
