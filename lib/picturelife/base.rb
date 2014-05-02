@@ -16,7 +16,7 @@ module Picturelife
     end
 
     def authenticated?
-      @access_token
+      !! @access_token
     end
 
     def reset_configuration!
