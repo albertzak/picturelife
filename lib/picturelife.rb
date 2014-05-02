@@ -1,3 +1,4 @@
+require 'cgi'
 require 'json'
 require 'net/https'
 require 'digest/sha2'
