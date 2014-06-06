@@ -1,5 +1,6 @@
 require 'cgi'
 require 'json'
+require 'excon'
 require 'net/https'
 require 'digest/sha2'
 require 'picturelife/error'
