@@ -23,9 +23,17 @@ module Picturelife
     end
   end
 
-  class OAuthError < StandardError; end
-  class ApiError < StandardError; end
+  class ApiError < StandardError
+    attr_reader :code
+    def initialize(code = nil, msg = nil, response = nil)
+      puts @code = code
+      puts response.to_s
+      super msg
+    end
+  end
 
+  class RulerError < ApiError; end
+  class OAuthError < ApiError; end
 
   module Util
 
