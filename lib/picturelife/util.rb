@@ -20,7 +20,7 @@ module Picturelife
     end
 
     def client_uuid
-      @client_uuid ||= rand(36**36).to_s(36)
+      @client_uuid ||= rand(10**10).to_s
     end
 
     def get_signature(file_path)

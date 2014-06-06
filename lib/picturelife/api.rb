@@ -29,7 +29,7 @@ module Picturelife
         uri      = URI(URI.encode(uri))
         response = Net::HTTP.get(uri)
         response = JSON.parse(response)
-        raise ApiError.new(response) if response["status"] != 20000
+        raise ApiError.new(response["status"], response["error"], response) if (response["status"] != 20000 && response["status"] != 200)
         response
       end
     end

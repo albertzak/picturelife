@@ -28,7 +28,16 @@ module Picturelife
         "&client_uuid=#{client_uuid}"
       ].join
 
-      @access_token = api_oauth_get(uri)['access_token']
+      res = api_oauth_get(uri)
+
+      if res['status'] != 200
+        raise OAuthError.new(res['status'], res['error'], res)
+      else
+        @refresh_token = res['refresh_token']
+        @user_id       = res['user_id']
+        @token_expires = Time.at(res['expires'])
+        @access_token  = res['access_token']        
+      end
     end
 
     private
