@@ -28,10 +28,20 @@ module Picturelife
       def api_get(uri)
         uri      = URI(URI.encode(uri))
         response = Net::HTTP.get(uri)
-        response = JSON.parse(response)
+        response = parse_response(response)
         raise ApiError.new(response["status"], response["error"], response) if (response["status"] != 20000 && response["status"] != 200)
         response
       end
+
+      def parse_response(string)
+        error_response = {
+          'status': -1,
+          'error':  string.to_s
+        }
+        
+        JSON.parse(response) rescue error_response
+      end
+
     end
   end
 end
