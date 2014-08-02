@@ -15,5 +15,5 @@ include Picturelife::Util
 include Picturelife::Ruler
 
 module Picturelife
-  VERSION = "0.0.1"
+  VERSION = "0.0.2"
 end

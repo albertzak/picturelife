@@ -35,10 +35,10 @@ module Picturelife
 
       def parse_response(string)
         error_response = {
-          'status': -1,
-          'error':  string.to_s
+          'status' => -1,
+          'error'  => string.to_s
         }
-        
+
         JSON.parse(response) rescue error_response
       end
 
